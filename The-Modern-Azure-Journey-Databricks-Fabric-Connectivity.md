@@ -47,7 +47,7 @@ flowchart TB
 
     subgraph ACT2["ACT 2 — INTELLIGENCE (2/3): Turn Trusted Data into Intelligence"]
         direction LR
-        FIQ["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/fabric-iq-graph.svg' width='36'/><br/><b>Fabric IQ & Semantic Layer</b><br/>(Enterprise Ontology, Graph &<br/>Direct Lake Semantic Models)"]
+        FIQ["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/fabric-iq.svg' width='36'/><br/><b>Fabric IQ</b><br/>(Enterprise Ontology, Graph &<br/>Direct Lake Semantic Layer)"]
         DA["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/data-agent.svg' width='36'/><br/><b>Fabric Data Agent</b><br/>(Domain Instructions, Verified SQL,<br/>Published Knowledge Endpoint)"]
         FOUNDRY["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/microsoft-foundry.svg' width='36'/><br/><b>Microsoft Foundry</b><br/>(Foundry Agent Service, Azure OpenAI,<br/>Grounding & Code Interpreter)"]
         FIQ -->|"Context"| DA -->|"Grounding"| FOUNDRY
