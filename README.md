@@ -39,18 +39,18 @@ As we designed our end-to-end reference implementation, we structured the archit
 flowchart TB
     subgraph ACT1["ACT 1 — DATA (1/3): Meet Customers Where Data Lives"]
         direction LR
-        ADB["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/azure-databricks.svg' width='36'/> <img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/adls-gen2.svg' width='28'/><br/><b>Azure Databricks</b><br/>(Unity Catalog, DLT / Lakeflow,<br/>Bronze → Silver → Gold)"]
-        INTEROP["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/mirrored-catalog.svg' width='36'/> <img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/databricks-access-connector.svg' width='36'/><br/><b>Bidirectional Zero-Copy<br/>Interoperability</b><br/>(Mirrored UC & OneLake Federation)"]
-        FAB["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/microsoft-fabric.svg' width='36'/> <img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/onelake.svg' width='36'/><br/><b>Microsoft Fabric & OneLake</b><br/>(Shortcuts, SQL Endpoint,<br/>Direct Lake Semantic Models)"]
-        ADB <-->|"Open APIs"| INTEROP <-->|"Zero-Copy"| FAB
+        ADB["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/azure-databricks.svg' width='36'/><br/><b>Azure Databricks</b><br/>(Unity Catalog, DLT / Lakeflow,<br/>Bronze → Silver → Gold)"]
+        INTEROP["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/mirrored-catalog.svg' width='36'/><br/><b>Zero-Copy Interoperability</b><br/>(Mirrored UC & OneLake Federation)"]
+        FAB["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/microsoft-fabric.svg' width='36'/><br/><b>Microsoft Fabric & OneLake</b><br/>(Shortcuts, SQL Endpoint,<br/>Direct Lake Semantic Models)"]
+        ADB <-->|"Open APIs"| INTEROP <-->|"Shortcuts"| FAB
     end
 
     subgraph ACT2["ACT 2 — INTELLIGENCE (2/3): Turn Trusted Data into Intelligence"]
         direction LR
-        FIQ["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/fabric-iq-graph.svg' width='36'/> <img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/fabric-iq-ontology.svg' width='36'/> <img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/semantic-model.svg' width='36'/><br/><b>Fabric IQ & Semantic Layer</b><br/>(Enterprise Ontology, Graph &<br/>Direct Lake Semantic Models)"]
+        FIQ["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/fabric-iq-graph.svg' width='36'/><br/><b>Fabric IQ & Semantic Layer</b><br/>(Enterprise Ontology, Graph &<br/>Direct Lake Semantic Models)"]
         DA["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/data-agent.svg' width='36'/><br/><b>Fabric Data Agent</b><br/>(Domain Instructions, Verified SQL,<br/>Published Knowledge Endpoint)"]
-        FOUNDRY["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/microsoft-foundry.svg' width='36'/> <img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/azure-ai.svg' width='36'/><br/><b>Microsoft Foundry</b><br/>(Agent Service, Models,<br/>Grounding & Code Interpreter)"]
-        FIQ -->|"Ontology & Metrics"| DA -->|"Grounded Business Context"| FOUNDRY
+        FOUNDRY["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/microsoft-foundry.svg' width='36'/><br/><b>Microsoft Foundry</b><br/>(Foundry Agent Service, Azure OpenAI,<br/>Grounding & Code Interpreter)"]
+        FIQ -->|"Context"| DA -->|"Grounding"| FOUNDRY
     end
 
     subgraph ACT3["ACT 3 — EXPERIENCE (3/3): Put AI Where Users Work"]
