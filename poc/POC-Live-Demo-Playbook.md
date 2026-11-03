@@ -1,4 +1,4 @@
-# Live Customer POC & Demo Playbook: The Modern Azure Journey (Data → Intelligence → Experience)
+# Brand-New Customer POC & Live Demo Playbook: The Modern Azure Journey (`Zava_*` Nomenclature)
 
 *Deployed & Verified in Sandbox Environment: `admin@MngEnvMCAP927255.onmicrosoft.com`*
 
@@ -6,146 +6,109 @@
 
 ---
 
-## 1. Live Sandbox Environment Inventory (Pre-Configured & Verified)
+## 1. Brand-New `Zava_*` POC Artifacts Deployed in Your Sandbox
 
-Everything in this POC is **already live and running** in your Azure and Microsoft Fabric sandbox environment. You can click any of the links below during your customer presentation:
+Every single item below is **brand-new**, created specifically for this blog and customer demo with clean, consistent **`Zava_*` / `zava_*`** naming so your portal screenshots look cohesive end-to-end:
 
-| Architectural Layer | Resource Name | ID / Endpoint | Direct Portal Link |
+### A. Azure Databricks (`dbrx-mirroring-pe-fabric`)
+- **Workspace URL:** [https://adb-7405607060119348.8.azuredatabricks.net/explore/data?o=7405607060119348](https://adb-7405607060119348.8.azuredatabricks.net/explore/data?o=7405607060119348)
+- **Serverless SQL Warehouse:** `serverless` (`4a57219370b180ea`)
+
+| Catalog Name | Catalog Type | Schema | Tables Created | Purpose in Demo |
+| :--- | :--- | :--- | :--- | :--- |
+| **`zava_enterprise_uc`** | `MANAGED_CATALOG` (ADLS Gen2 `sadatabrickslab01`) | `bronze_ingestion` | `raw_order_events` | **Act 1 (Medallion Bronze):** Raw ingested order events |
+| **`zava_enterprise_uc`** | `MANAGED_CATALOG` | `silver_curated` | `dim_products` | **Act 1 (Medallion Silver):** Curated product & margin master |
+| **`zava_enterprise_uc`** | `MANAGED_CATALOG` | `gold_analytics` | `regional_sales_performance`<br/>`customer_churn_risk`<br/>`campaign_bounce_metrics` | **Act 1 (Medallion Gold — Inbound to Fabric):** Mirrored zero-copy into Microsoft Fabric OneLake |
+| **`zava_fabric_onelake_catalog`** | `FOREIGN_CATALOG` (OneLake Connection `dbrx1lake`) | `dbo` | `dim_region_targets` | **Act 1 (Outbound Federation from Fabric):** Reads Fabric `Zava_Enterprise_Warehouse` directly inside Databricks without copying data |
+
+---
+
+### B. Microsoft Fabric (`ws_1_copilotdemo`)
+- **Workspace URL:** [https://app.fabric.microsoft.com/groups/8b72677f-f882-4123-93bd-6da6856677be/list?experience=fabric-developer](https://app.fabric.microsoft.com/groups/8b72677f-f882-4123-93bd-6da6856677be/list?experience=fabric-developer)
+
+| Fabric Item Name | Item Type | Item ID | What's Inside |
 | :--- | :--- | :--- | :--- |
-| **Entra ID Tenant** | `Contoso` | `afa6899d-aa46-4992-a3eb-5c8015aa5d1f` | `admin@MngEnvMCAP927255.onmicrosoft.com` |
-| **Azure Subscription** | `ME-MngEnvMCAP927255-masinav-1` | `9e114e9d-1e81-4b56-9ddd-55bae9226770` | [Azure Portal](https://portal.azure.com) |
-| **Act 1: Azure Databricks Workspace** | `dbrx-mirroring-pe-fabric` (`lumen-rg`, `westus3`) | `https://adb-7405607060119348.8.azuredatabricks.net` | [Open Databricks Catalog Explorer](https://adb-7405607060119348.8.azuredatabricks.net/explore/data?o=7405607060119348) |
-| **Act 1: Databricks Serverless SQL Warehouse** | `serverless` | `4a57219370b180ea` | [Open Databricks SQL Editor](https://adb-7405607060119348.8.azuredatabricks.net/sql/editor?o=7405607060119348) |
-| **Act 1: Managed Unity Catalog (Inbound to Fabric)** | `fabric_mirror_catalog.sales_schema` | ADLS Gen2: `sadatabrickslab01` (`ext-location`) | Tables: `sales_data`, `regional_sales_performance`, `customer_churn_risk` |
-| **Act 1: OneLake Foreign Catalog (Outbound to Databricks)** | `fabric_onelake_federation.dbo` | UC Connection: `dbrx1lake` (Type: `ONELAKE`) | Federates Fabric Lakehouse `Snowflake_LH` (`fe3259d5-6703-4584-a309-14175eb49d10`) |
-| **Act 1: Microsoft Fabric Workspace** | `ws_1_copilotdemo` | `8b72677f-f882-4123-93bd-6da6856677be` | [Open Fabric Workspace](https://app.fabric.microsoft.com/groups/8b72677f-f882-4123-93bd-6da6856677be/list?experience=fabric-developer) |
-| **Act 1: Mirrored Azure Databricks Catalog Item** | `fabric_mirror_catalog` | Item ID: `473edebe-1fe3-451a-88ad-9831f4e3c62e`<br/>SQL Endpoint ID: `43cf8b31-a1ae-4a6a-b64d-b8dfcd96a76b` | `twe2nl2gvkjeti7llsablks5d4-p5txfc4c7arude55nwtikztxxy.datawarehouse.fabric.microsoft.com` |
-| **Act 1 & 2: Fabric Lakehouse (with OneLake Shortcuts)** | `LH_IQDemo` | Item ID: `f36c92a3-76c8-4a49-a57f-f12c1f251ee2` | Shortcuts: `dbrx_sales_data`, `dbrx_regional_sales_performance`, `dbrx_customer_churn_risk` |
-| **Act 2: Fabric IQ Ontology & Semantic Models** | `Telecom_OntologyIQ`, `Demo_Ontology_1`, `mirrored_semantic_model_dbrx` | Ontology ID: `b87b2352-62a6-4fa8-9359-7f60da878fe0`<br/>Semantic Model ID: `83565604-d98b-4420-8d23-0716ea972b38` | Governed inside `ws_1_copilotdemo` |
-| **Act 2: Fabric Data Agent** | `mirror agent` | Item ID: `682f5859-088d-4713-9d4d-28a4f5cbe3e8` | Grounded over mirrored Databricks & OneLake tables |
-| **Act 2 & 3: Microsoft Foundry** | `aishu-ai-foundry` / `aishu-foundry-project` | `https://aishu-ai-foundry.cognitiveservices.azure.com/` | Model Deployment: `gpt-4o` |
+| **`Zava_Mirrored_Databricks_UC`** | `MirroredAzureDatabricksCatalog` | `19ebb1e0-bfd8-42ff-8058-681ed813d97a`<br/>*(SQL Endpoint: `c5083167-d2e7-4b0d-bfb7-b4604710a8a6`)* | **Act 1 (Inbound Zero-Copy Mirror):** Automatically mirrors `bronze_ingestion.raw_order_events`, `silver_curated.dim_products`, `gold_analytics.regional_sales_performance`, `gold_analytics.customer_churn_risk`, and `gold_analytics.campaign_bounce_metrics` from `zava_enterprise_uc`. |
+| **`Zava_Unified_Lakehouse`** | `Lakehouse` | `014e8d94-1f30-45b2-a732-18ef9873f027`<br/>*(SQL Endpoint: `4260e545-4aef-4e71-b027-16267b85153a`)* | **Act 1 (OneLake Shortcuts):** Contains 5 zero-copy OneLake shortcuts pointing to `Zava_Mirrored_Databricks_UC`:<br/>• `dbo.gold_regional_sales_performance`<br/>• `dbo.gold_customer_churn_risk`<br/>• `dbo.gold_campaign_bounce_metrics`<br/>• `dbo.silver_dim_products`<br/>• `dbo.bronze_raw_order_events` |
+| **`Zava_Enterprise_Warehouse`** | `Warehouse` | `768bae7f-8ca1-44ba-b4d0-061177d0fe22` | **Act 1 (Outbound Federation Source):** Contains `dbo.dim_region_targets` (Regional VPs, quarterly revenue targets, and strategic priorities)—federated into Databricks as `zava_fabric_onelake_catalog`. |
+| **`Zava_Enterprise_Ontology_IQ`** | `Ontology` *(Fabric IQ)* | `cc9b99a3-e222-493c-9273-d2b033baf6a2`<br/>*(GraphModel: `a65aa491-f780-4df7-8890-d21f633abad8`)* | **Act 2 (Fabric IQ Semantic Layer):** Enterprise Ontology & Graph Model for Zava's business entities. |
+| **`Zava_Insights_DataAgent`** | `DataAgent` | `2bd3427a-d55a-4064-8f10-86c1eb9c02c7` | **Act 2 (Fabric Data Agent):** Conversational Data Agent for Zava's unified lakehouse data. |
 
 ---
 
-## 2. Customer Talk Track & Step-by-Step Live Demo Script (15–20 Minutes)
+### C. Microsoft Foundry (`aishu-ai-foundry` / `aishu-foundry-project`)
+- **Foundry Project Resource:** `/subscriptions/9e114e9d-1e81-4b56-9ddd-55bae9226770/resourceGroups/aishu-ai-learnings/providers/Microsoft.CognitiveServices/accounts/aishu-ai-foundry/projects/aishu-foundry-project`
 
-### Opening Hook (1 Minute)
-> *"When organizations talk about enterprise AI, the conversation usually starts with models and agents. But in reality, customers ask us a much more fundamental question first: **'Why would we change our existing Azure Databricks architecture just to use Microsoft Fabric and AI?'**"*
->
-> *"Today, I'm going to show you live in our environment why **modernization does not mean migration**. We will walk through three acts—**Data (1/3)**, **Intelligence (2/3)**, and **Experience (3/3)**—answering one real business question end-to-end without moving or duplicating a single byte of data."*
-
-**The Business Question We Will Answer Live:**
-> *"Why are sales declining and product returns rising in the Southwest region, how much annualized revenue is at risk from customer churn, and what specific retention action should we take for each account?"*
+| Foundry Resource Name | Type | ID / Version | Purpose in Demo |
+| :--- | :--- | :--- | :--- |
+| **`Zava_Insights_DataAgent_Conn`** | Project Connection (`fabric_dataagent`) | Connected to `Zava_Insights_DataAgent` (`2bd3427a-d55a-4064-8f10-86c1eb9c02c7`) | **Act 2 → Act 3 Bridge:** Links Microsoft Foundry to the Fabric Data Agent in `ws_1_copilotdemo`. |
+| **`Zava-Enterprise-Insights-Agent`** | Foundry Agent (`gpt-4o` + `code_interpreter`) | `Zava-Enterprise-Insights-Agent:1` (`eb18acf7-5523-4295-a543-edb494e62901`) | **Act 2 & Act 3 Agent:** Grounded in Zava's Databricks + Fabric + Fabric IQ data with Code Interpreter enabled. |
 
 ---
 
-### ACT 1 — DATA (1/3): Meet Customers Where Their Data Already Lives (6 Minutes)
+## 2. Step-by-Step Live Customer Demo Script (With Exact Queries to Run)
 
-#### Demo Step 1.1: Show the Existing Azure Databricks Unity Catalog Estate
-1. Open the [Azure Databricks Catalog Explorer](https://adb-7405607060119348.8.azuredatabricks.net/explore/data?o=7405607060119348).
-2. Expand **`fabric_mirror_catalog`** → **`sales_schema`**.
-3. Show the three Delta tables managed in Unity Catalog and stored on ADLS Gen2 (`abfss://ext-location@sadatabrickslab01.dfs.core.windows.net/`):
-   - `sales_data`
-   - `regional_sales_performance`
-   - `customer_churn_risk`
-4. Open the Databricks SQL Editor (attached to the `serverless` SQL Warehouse) and run:
+### ACT 1 — DATA (1/3): Bidirectional Zero-Copy Interoperability
+
+#### Step 1.1: Show `zava_enterprise_uc` & `zava_fabric_onelake_catalog` in Azure Databricks
+1. Open [Azure Databricks Catalog Explorer](https://adb-7405607060119348.8.azuredatabricks.net/explore/data?o=7405607060119348).
+2. Expand **`zava_enterprise_uc`** and show the three Medallion schemas:
+   - `bronze_ingestion` (`raw_order_events`)
+   - `silver_curated` (`dim_products`)
+   - `gold_analytics` (`regional_sales_performance`, `customer_churn_risk`, `campaign_bounce_metrics`)
+3. Next, expand **`zava_fabric_onelake_catalog`** → `dbo` → `dim_region_targets` to show **OneLake Catalog Federation** reading `Zava_Enterprise_Warehouse` from Microsoft Fabric.
+4. Open the **Databricks SQL Editor** and run this **cross-platform zero-copy JOIN** combining **Fabric OneLake (`zava_fabric_onelake_catalog`)** with **Databricks Unity Catalog (`zava_enterprise_uc`)**:
 
 ```sql
--- Run in Azure Databricks SQL Editor
+-- Run in Azure Databricks SQL Editor: Cross-Platform Zero-Copy Join!
 SELECT
-  region,
-  product_name,
-  customer_segment,
-  SUM(units_sold) AS units_sold,
-  ROUND(SUM(total_revenue), 2) AS total_revenue,
-  SUM(CASE WHEN return_flag = 'Yes' THEN 1 ELSE 0 END) AS return_txns
-FROM fabric_mirror_catalog.sales_schema.regional_sales_performance
-GROUP BY region, product_name, customer_segment
-ORDER BY region, total_revenue DESC;
+  t.region,
+  t.regional_vp,
+  t.quarterly_revenue_target,
+  ROUND(SUM(s.total_revenue), 2) AS actual_revenue,
+  ROUND(SUM(s.total_revenue) - t.quarterly_revenue_target, 2) AS target_variance,
+  t.strategic_priority
+FROM zava_fabric_onelake_catalog.dbo.dim_region_targets t
+JOIN zava_enterprise_uc.gold_analytics.regional_sales_performance s
+  ON t.region = s.region
+GROUP BY t.region, t.regional_vp, t.quarterly_revenue_target, t.strategic_priority
+ORDER BY target_variance ASC;
 ```
 
-**What to point out to the customer:**
-- Nothing in the customer's Databricks Medallion pipeline changed. Data stays in their existing ADLS Gen2 storage account (`sadatabrickslab01`) governed by Unity Catalog.
-
 ---
 
-#### Demo Step 1.2: Show Inbound Zero-Copy — Mirrored Azure Databricks Catalog in Microsoft Fabric
-1. Switch to your browser tab for the [Microsoft Fabric Workspace (`ws_1_copilotdemo`)](https://app.fabric.microsoft.com/groups/8b72677f-f882-4123-93bd-6da6856677be/list?experience=fabric-developer).
-2. Open the **`fabric_mirror_catalog`** item (type: *Mirrored Azure Databricks catalog*).
-3. Show that `sales_schema.sales_data`, `sales_schema.regional_sales_performance`, and `sales_schema.customer_churn_risk` are mirrored with `autoSync: Enabled`.
-4. Switch to the **SQL analytics endpoint** of `fabric_mirror_catalog` (or open **`LH_IQDemo`** where we created OneLake table shortcuts `dbrx_regional_sales_performance` and `dbrx_customer_churn_risk` alongside Apache Iceberg tables `subscribers_iceberg` and `network_events_iceberg`!) and run this T-SQL query:
+#### Step 1.2: Show `Zava_Mirrored_Databricks_UC` & `Zava_Unified_Lakehouse` in Microsoft Fabric
+1. Switch to your [Microsoft Fabric Workspace (`ws_1_copilotdemo`)](https://app.fabric.microsoft.com/groups/8b72677f-f882-4123-93bd-6da6856677be/list?experience=fabric-developer) and filter the item list by typing **`Zava_`**.
+2. Click on **`Zava_Mirrored_Databricks_UC`** to show all 3 schemas (`bronze_ingestion`, `silver_curated`, `gold_analytics`) and 5 tables mirrored automatically from Azure Databricks without moving data.
+3. Open **`Zava_Unified_Lakehouse`** and show the 5 OneLake shortcuts (`gold_regional_sales_performance`, `gold_customer_churn_risk`, `gold_campaign_bounce_metrics`, `silver_dim_products`, `bronze_raw_order_events`).
+4. Open the **SQL analytics endpoint** of **`Zava_Unified_Lakehouse`** and run this T-SQL query:
 
 ```sql
--- Run in Microsoft Fabric SQL Analytics Endpoint (LH_IQDemo or fabric_mirror_catalog)
+-- Run in Microsoft Fabric SQL Analytics Endpoint (Zava_Unified_Lakehouse)
 SELECT
   r.region,
-  COUNT(DISTINCT r.transaction_id) AS transactions,
-  ROUND(SUM(r.total_revenue), 2) AS total_sales_revenue,
-  COUNT(DISTINCT CASE WHEN c.churn_status = 'Yes' THEN c.customer_id END) AS high_risk_customers,
-  ROUND(SUM(DISTINCT CASE WHEN c.churn_status = 'Yes' THEN c.annualized_revenue ELSE 0 END), 2) AS annualized_revenue_at_risk
-FROM dbo.dbrx_regional_sales_performance r
-LEFT JOIN dbo.dbrx_customer_churn_risk c
-  ON r.region = c.region
-GROUP BY r.region
-ORDER BY total_sales_revenue DESC;
-```
-
-**What to point out to the customer:**
-- Notice in `LH_IQDemo` under `/Tables`, we have **Databricks Unity Catalog Delta tables** (`dbrx_regional_sales_performance`, `dbrx_customer_churn_risk`) sitting side-by-side with **Iceberg tables** (`subscribers_iceberg`, `network_events_iceberg`)—all via OneLake shortcuts with **zero data movement**.
-
----
-
-#### Demo Step 1.3: Show Outbound Zero-Copy — OneLake Catalog Federation Back into Azure Databricks
-1. Switch back to the [Azure Databricks Catalog Explorer](https://adb-7405607060119348.8.azuredatabricks.net/explore/data?o=7405607060119348).
-2. Click on the foreign catalog **`fabric_onelake_federation`** (type: `FOREIGN_CATALOG`, connection: `dbrx1lake` of type `ONELAKE`).
-3. Run this federated query in Databricks SQL to prove Databricks can query 165 million rows directly from Microsoft Fabric OneLake without copying data:
-
-```sql
--- Run in Azure Databricks SQL Editor (Querying Microsoft Fabric OneLake directly!)
-SELECT COUNT(*) AS total_fabric_onelake_customers
-FROM fabric_onelake_federation.dbo.customer;
+  r.product_name,
+  p.brand_family,
+  r.customer_segment,
+  SUM(r.units_sold) AS total_units,
+  ROUND(SUM(r.total_revenue), 2) AS total_revenue,
+  SUM(CASE WHEN r.return_flag = 'Yes' THEN 1 ELSE 0 END) AS return_transactions
+FROM dbo.gold_regional_sales_performance r
+JOIN dbo.silver_dim_products p
+  ON r.product_id = p.product_id
+GROUP BY r.region, r.product_name, p.brand_family, r.customer_segment
+ORDER BY r.region, total_revenue DESC;
 ```
 
 ---
 
-### ACT 2 — INTELLIGENCE (2/3): Turn Trusted Business Data into Intelligence (5 Minutes)
+### ACT 2 & ACT 3 — INTELLIGENCE & EXPERIENCE: Fabric IQ, Data Agent & Microsoft Foundry
 
-#### Demo Step 2.1: Show Fabric IQ (Ontology & Semantic Layer) + Direct Lake
-1. In the Fabric workspace `ws_1_copilotdemo`, point out:
-   - **Direct Lake Semantic Model:** `mirrored_semantic_model_dbrx` (reads Delta files directly from OneLake without scheduled import refreshes).
-   - **Fabric IQ Ontology:** `Demo_Ontology_1` and `Telecom_OntologyIQ` (maps raw tables into business entities, relationships, and semantic rules).
-
-#### Demo Step 2.2: Show the Governed Fabric Data Agent (`mirror agent`)
-1. Open the **`mirror agent`** item (`682f5859-088d-4713-9d4d-28a4f5cbe3e8`) in `ws_1_copilotdemo`.
-2. Show how **Agent Instructions** define business context over the mirrored Databricks tables:
-   - *Rule 1:* Evaluate product and regional performance using `total_revenue` and `return_flag` from `dbrx_regional_sales_performance`.
-   - *Rule 2:* Calculate `annualized_revenue` at risk from `dbrx_customer_churn_risk` where `churn_status = 'Yes'` and always include `recommended_retention_action`.
-3. Ask the Data Agent in Fabric:
-   - `"Which customers in the Southwest region are at risk of churning, what is their annualized revenue, and what retention action should we take?"`
-
----
-
-### ACT 3 — EXPERIENCE (3/3): Put AI Where Users Actually Work (4 Minutes)
-
-#### Demo Step 3.1: Run the End-to-End Automated Live POC Script (or Microsoft Foundry Playground)
-To show the complete 3-Act pipeline executing live in one command—querying **OneLake Federation in Databricks**, querying **Mirrored Databricks tables in Fabric `LH_IQDemo`**, and grounding **Microsoft Foundry (`aishu-ai-foundry` / `gpt-4o`)** to produce an executive action plan—run:
+1. In the Fabric workspace filtered to **`Zava_`**, show:
+   - **`Zava_Enterprise_Ontology_IQ`** (Fabric IQ Ontology & Graph Model)
+   - **`Zava_Insights_DataAgent`** (Fabric Data Agent)
+2. In **Microsoft Foundry** (`aishu-ai-foundry` → `aishu-foundry-project`), open **Agents** and select **`Zava-Enterprise-Insights-Agent`** (connected to `Zava_Insights_DataAgent_Conn`), or run the automated end-to-end live POC runner from your terminal:
 
 ```powershell
-python .\poc\run_live_poc_demo.py
-```
-
-**What the Live Script Proves in Real Time:**
-1. **Act 1A (Outbound Federation):** Queries `165,000,000` rows from Fabric OneLake (`fabric_onelake_federation.dbo.customer`) via Azure Databricks Serverless SQL.
-2. **Act 1B (Inbound Mirroring & Shortcuts):** Queries live regional sales and customer churn risk from `LH_IQDemo.dbo.dbrx_regional_sales_performance` and `LH_IQDemo.dbo.dbrx_customer_churn_risk` via the Fabric SQL Analytics Endpoint.
-3. **Act 2 & 3 (Intelligence & Experience):** Passes the governed Fabric context to **Microsoft Foundry (`gpt-4o` on `aishu-ai-foundry`)**, which synthesizes the root cause of the Southwest decline ($78,240 annualized revenue at risk across 4 accounts, driven by 64.9%–74.2% mobile portal bounce rates and Legacy LTE throttling) and prescribes account-by-account retention actions.
-
----
-
-## 3. Live Demo Verification Commands (Quick Reference)
-
-If you ever want to re-seed or reset the demo tables in Azure Databricks and re-sync the shortcuts into Fabric `LH_IQDemo` before a customer call, simply run:
-
-```powershell
-# Run the live E2E POC verification & demo script
-python .\poc\run_live_poc_demo.py
+python .\poc\run_zava_live_poc.py
 ```
