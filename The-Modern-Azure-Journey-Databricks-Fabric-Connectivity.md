@@ -30,7 +30,7 @@ Instead, it should prove: **"Here is how an organization already invested in Azu
 
 As we designed our end-to-end reference implementation, we structured the architecture around three distinct acts. Your Databricks and Fabric connectivity foundation is **Act 1**—the essential 1/3 that unlocks the entire downstream AI and user experience:
 
-![The Modern Azure Journey: 3-Act Architecture Diagram with Official Azure Databricks, Microsoft Fabric, OneLake, and Microsoft Foundry Icons](./images/3-act-architecture-diagram.svg)
+![The Modern Azure Journey: 3-Act Architecture Diagram with Official Azure Databricks, Microsoft Fabric, OneLake, Fabric IQ, and Microsoft Foundry Icons](./images/3-act-architecture-diagram.svg)
 
 <details>
 <summary><b>View Mermaid Architecture Source (with Official Service Icons)</b></summary>
@@ -39,24 +39,25 @@ As we designed our end-to-end reference implementation, we structured the archit
 flowchart TB
     subgraph ACT1["ACT 1 — DATA (1/3): Meet Customers Where Data Lives"]
         direction LR
-        ADB["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/azure-databricks.svg' width='36'/><br/><b>Azure Databricks</b><br/>(Unity Catalog, DLT / Lakeflow,<br/>Bronze → Silver → Gold)"]
-        INTEROP["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/databricks-access-connector.svg' width='36'/><br/><b>Bidirectional Zero-Copy<br/>Interoperability</b><br/>(Mirrored UC & OneLake Federation)"]
+        ADB["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/azure-databricks.svg' width='36'/> <img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/adls-gen2.svg' width='28'/><br/><b>Azure Databricks</b><br/>(Unity Catalog, DLT / Lakeflow,<br/>Bronze → Silver → Gold)"]
+        INTEROP["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/mirrored-catalog.svg' width='36'/> <img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/databricks-access-connector.svg' width='36'/><br/><b>Bidirectional Zero-Copy<br/>Interoperability</b><br/>(Mirrored UC & OneLake Federation)"]
         FAB["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/microsoft-fabric.svg' width='36'/> <img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/onelake.svg' width='36'/><br/><b>Microsoft Fabric & OneLake</b><br/>(Shortcuts, SQL Endpoint,<br/>Direct Lake Semantic Models)"]
-        ADB <-->|"Open APIs / Zero-Copy"| INTEROP <--> FAB
+        ADB <-->|"Open APIs"| INTEROP <-->|"Zero-Copy"| FAB
     end
 
     subgraph ACT2["ACT 2 — INTELLIGENCE (2/3): Turn Trusted Data into Intelligence"]
         direction LR
-        DA["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/data-agent.svg' width='36'/><br/><b>Fabric Data Agent /</b><br/>Fabric IQ Semantic Context"]
+        FIQ["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/fabric-iq-graph.svg' width='36'/> <img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/fabric-iq-ontology.svg' width='36'/> <img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/semantic-model.svg' width='36'/><br/><b>Fabric IQ & Semantic Layer</b><br/>(Enterprise Ontology, Graph &<br/>Direct Lake Semantic Models)"]
+        DA["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/data-agent.svg' width='36'/><br/><b>Fabric Data Agent</b><br/>(Domain Instructions, Verified SQL,<br/>Published Knowledge Endpoint)"]
         FOUNDRY["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/microsoft-foundry.svg' width='36'/> <img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/azure-ai.svg' width='36'/><br/><b>Microsoft Foundry</b><br/>(Agent Service, Models,<br/>Grounding & Code Interpreter)"]
-        DA -->|"Grounded Business Context"| FOUNDRY
+        FIQ -->|"Ontology & Metrics"| DA -->|"Grounded Business Context"| FOUNDRY
     end
 
     subgraph ACT3["ACT 3 — EXPERIENCE (3/3): Put AI Where Users Work"]
         direction LR
         M365["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/copilot.svg' width='32'/><br/><b>Microsoft 365 Copilot</b>"]
         TEAMS["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/microsoft-teams.svg' width='32'/><br/><b>Microsoft Teams</b>"]
-        PBI["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/power-bi.svg' width='32'/><br/><b>Power BI Reports</b>"]
+        PBI["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/power-bi.svg' width='32'/><br/><b>Power BI & Copilot</b>"]
         APPS["<img src='https://raw.githubusercontent.com/masinav-msft/Databricks-Blogs/main/images/icons/app-service.svg' width='32'/><br/><b>Custom Apps & APIs</b>"]
     end
 
@@ -68,8 +69,8 @@ flowchart TB
 
 | Act | Pillar | Guiding Principle | Key Question Answered | Core Technologies |
 | :--- | :--- | :--- | :--- | :--- |
-| **Act 1 (1/3)** | **DATA** | *Meet customers where their data already lives.* | Where is my enterprise data, and how can the broader Microsoft ecosystem work with it without copying it? | Azure Databricks, Unity Catalog, Microsoft Fabric, OneLake, Direct Lake |
-| **Act 2 (2/3)** | **INTELLIGENCE** | *Turn trusted business data into intelligence.* | How can AI models and agents reason over governed enterprise metrics rather than raw schemas? | Fabric Data Agents, Semantic Models, Microsoft Foundry, Azure OpenAI |
+| **Act 1 (1/3)** | **DATA** | *Meet customers where their data already lives.* | Where is my enterprise data, and how can the broader Microsoft ecosystem work with it without copying it? | Azure Databricks, Unity Catalog, Mirrored Catalog, Microsoft Fabric, OneLake |
+| **Act 2 (2/3)** | **INTELLIGENCE** | *Turn trusted business data into intelligence.* | How can AI models and agents reason over governed enterprise ontologies and metrics rather than raw schemas? | **Fabric IQ** (Ontology, Graph & Semantic Models), **Fabric Data Agents**, **Microsoft Foundry**, Azure OpenAI |
 | **Act 3 (3/3)** | **EXPERIENCE** | *Bring intelligence to where work happens.* | Where and how will business users actually consume this intelligence without knowing the underlying plumbing? | Microsoft 365 Copilot, Microsoft Teams, Power BI, Custom APIs/Apps |
 
 ---
